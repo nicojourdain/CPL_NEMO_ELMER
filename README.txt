@@ -11,6 +11,7 @@
 # module load openmpi/intel/2.0.1
 # module load hdf5/1.8.17
 # module load netcdf/4.4.0_fortran-4.4.2
+# module load cmake
 #
 # ## Elmer's paths :
 # export ELMER_HOME=/home/njourd/models/Elmer/install
@@ -36,23 +37,24 @@ mkdir ~/include
 # and http://www.vtk.org/Wiki/VTK/Configure_and_Build
 
 cd ~/util
+# the wget command may not work in your cluster, if so copy paste it from elsewhere
 wget http://www.vtk.org/files/release/8.0/VTK-8.0.0.tar.gz  ## 29 Mo
 tar xzvf VTK-8.0.0.tar.gz
 cd VTK-8.0.0
-mkdir BLD
+mkdir build
+cd build
 ccmake ~/util/VTK-8.0.0
 # This will open an interactive window.
 # Press c to configure, then fill some of the fields, for example:
-# CMAKE_INSTALL_PREFIX             /home/njourd/util/VTK-8.0.0/BLD
+# CMAKE_INSTALL_PREFIX             /home/njourd/util/VTK-8.0.0/build
 # EXECUTABLE_OUTPUT_PATH           /home/njourd/lib
 # LIBRARY_OUTPUT_PATH              /home/njourd/lib
 # Then press c again. Then press g to generate the makefile.
-cd ~/util/VTK-8.0.0/VTK-build
 make  ## or make -j4 to go faster on parallel machines
 cd ~/lib
-for file in ~/util/VTK-8.0.0/VTK-build/lib/lib*; do ln -s -v $file; done
+for file in ~/util/VTK-8.0.0/build/lib/lib*; do ln -s -v $file; done
 #NB: to save space (if quota), it is recommended to remove all directories 
-#    in ~/util/VTK-8.0.0 except VTK-build/bin and VTK-build/lib
+#    in ~/util/VTK-8.0.0 except build/bin and build/lib
 
 #######################################################################################
 # MUMPS (MUltifrontal Massively Parallel sparse direct Solver)
@@ -61,9 +63,9 @@ cd ~/util
 wget http://mumps.enseeiht.fr/MUMPS_5.1.1.tar.gz
 tar xzvf MUMPS_5.1.1.tar.gz
 cd MUMPS_5.1.1
-cp -p Make.inc/Makefile.xxxxx Makefile.inc # then adapt... 
+cp -p Make.inc/Makefile.xxxxx Makefile.inc # take xxxxx=INTEL.PAR then adapt...
 #=============
-# On Occigen, the Makefile.inc should be :
+# On Occigen, the Makefile.inc should be:
 # NB: $MKLROOT is already defined if mkl lirary is installed.
 PLAT    =
 LIBEXT  = .a
@@ -138,9 +140,11 @@ ln -s -v ~/util/pygridgen/external/nn
 
 #######################################################################################
 ## 2- Compile Elmer/Ice
+## Version 6be9699fd6d9b15082f5bfad04776aabfa742489 works (21/12/2017)
 #######################################################################################
 # see https://groupes.renater.fr/wiki/elmerice/elmergit
 
+cd models
 mkdir Elmer
 cd Elmer
 git clone git://www.github.com/ElmerCSC/elmerfem -b elmerice elmerfem
@@ -150,12 +154,13 @@ export LANG=C
 ccmake ../elmerfem
 #================
 # Press c
-# First, adjust the following option if needed:
+# First, adjust the following option if needed
+# It not appearing type 't' and change it NOW because it affects the further other options
 #  CMAKE_Fortran_COMPILER           /opt/software/common/intel/compilers_and_libraries_2017.0.098/linux/bin/intel64/ifort
 # Then press c again. Then adjust the main options, in particular:
 #  CMAKE_BUILD_TYPE                RelWithDebInfo
 #  CMAKE_Fortran_MODULE_DIRECTORY  /home/njourd/models/Elmer/build/fmodules
-#  CMAKE_INSTALL_PREFIX            ../install
+#  CMAKE_INSTALL_PREFIX            /home/njourd/models/Elmer/install
 #  CPACK_PACKAGE_FILE_NAME         elmerfem-8.2-ddb8140-20170712_Linux-x86_64
 #  ELMER_SOLVER_HOME               /home/njourd/bin/elmersolver
 #  WITH_CONTRIB                     OFF
@@ -219,7 +224,7 @@ mkdir BUILD
 ./configure --prefix=${HOME}/util/netcdf-cxx4-4.2.1/BUILD
 make
 make install
-make test # should pass 7/7
+make check # should pass 7/7
 # NB: if needed (quota), you can remove cxx4/ and examples/ once compiled
 
 ##############################################################
@@ -230,7 +235,7 @@ git clone https://github.com/nicojourdain/From_VTK_to_NetCDF.git
 cd From_VTK_to_NetCDF
 vi CMakeLists.txt
 # adjust:
-#     set(VTK_DIR "/home/njourd/util/VTK-8.0.0/VTK-build")
+#     set(VTK_DIR "/home/njourd/util/VTK-8.0.0/build")
 # and:
 #     include_directories("/home/njourd/util/netcdf-cxx4-4.2.1/BUILD/include/")    
 mkdir build
