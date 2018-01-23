@@ -19,7 +19,7 @@
 #
 # Install all the libraries with this environment
 
-
+# Install done on the 23rd January 2018
 
 #######################################################################################
 ## 1- Install libraries required for Elmer/Ice
@@ -58,6 +58,7 @@ for file in ~/util/VTK-8.0.0/build/lib/lib*; do ln -s -v $file; done
 
 #######################################################################################
 # MUMPS (MUltifrontal Massively Parallel sparse direct Solver)
+# So far, module load mumps/5.1.1 doesn't work
 # see http://mumps.enseeiht.fr
 cd ~/util
 wget http://mumps.enseeiht.fr/MUMPS_5.1.1.tar.gz
