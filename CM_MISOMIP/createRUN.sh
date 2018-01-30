@@ -11,10 +11,10 @@ NUM_NODES_ELMER=1
 
 NRUN_MAX=200  # maximum number of consecutive Elmer/Ice runs
 
-ELMER_MESH_NAME=MISMIP_REGULAR
+ELMER_MESH_NAME=MISMIP_REGULAR  # not used ?
 
 TIME_STEP_ELMER=0.0833333333         # ELMER time step (in yr)
-INTERVALS_ELMER=6                    # duration of ELMER run (in nb time steps)
+INTERVALS_ELMER=3                    # duration of ELMER run (in nb time steps)
 FREQ_OUTPUT_ELMER=${INTERVALS_ELMER} # frequency for ELMER outputs
                                      #   NB1: should be ${INTERVALS_ELMER}
                                      #        or ${INTERVALS_ELMER} times an integer
@@ -24,18 +24,19 @@ NEMO_DAYS_RUN=`echo "31 * ${TIME_STEP_ELMER} * ${INTERVALS_ELMER} * 12" | bc -l 
 
 ## Elmer/Ice restart used as initial state for the coupled simultion
 #  NB: restart file is expected to be in ${PATH_RESTART}/${CASE_RESTART}/Results/${RUN_RESTART} 
-#                           with Mesh in ${PATH_RESTART}/${CASE_RESTART}/Mesh/${RUN_RESTART} 
+#                            and Mesh in ${PATH_RESTART}/${CASE_RESTART}/Mesh 
 PATH_RESTART=${STOREDIR}/output_MISMIP+
 CASE_RESTART=Test500m_Schoof_SSAStar
 RUN_RESTART=Run0
 
-FORCING_EXP_ID='EXP23'  ## ='EXP3' for ocean relaxation towards warm conditions 
-                        ## ='EXP4' for ocean relaxation towards cold conditions
+FORCING_EXP_ID='EXP23'  ## ='EXP3' for ocean relaxation towards warm conditions (Ocean3 in Asay-Davis et al. 2016)
+                        ## ='EXP4' for ocean relaxation towards cold conditions (Ocean4 in Asay-Davis et al. 2016)
+                        ## Others are customized by users.
 
 PREFIX_ELMER='Ice1r'   ## ='Ice1r' for retreat and warm ocean forcing (FORCING_EXP_ID=EXP3)
                        ## ='Ice1a' for readvance and cold ocean forcing (FORCING_EXP_ID=EXP4)
 
-# NEMO restart file (only used if you do not start with the ocean at rest, e.g. to restart MISOMIP)
+# NEMO's restart file (only used if you lauch the simulation with ./script_Start_From_Restart.sh)
 if [ ${FORCING_EXP_ID} == "EXP20" ]; then
   FEID="EXP10"
 elif [ ${FORCING_EXP_ID} == "EXP21" ]; then
@@ -47,16 +48,17 @@ elif [ ${FORCING_EXP_ID} == "EXP23" ]; then
 else
   FEID=${FORCING_EXP_ID}
 fi
-RST_FILE="/store/njourd/RESTART_NEMO_FOR_MISOMIP/restart_ISOMIP_${FEID}_rst_00525600.nc"
+RST_FILE="/store/njourd/RESTART_NEMO_FOR_MISOMIP/restart_ISOMIP_${FEID}_00630720.nc"
 
+# Directories where Elmer/Ice and NEMO run and store their restart and output files :
 WORKDIR_NEMO=/scratch/shared/egige60/NEMO_MISOMIP
 WORKDIR_ELMER=/scratch/shared/egige60/ELMER_MISOMIP
 
-#nj CASE_RESTART_PATH=/scratch/cnt0021/gge6066/imerino/MISMIP+/$CASE_RESTART/Results/$RUN_RESTART
+# Original (initial) bathymetry and ice shelf draft used by Elmer/Ice in fromVTKtoElmer
 BATHY_FILE=${WORKDIR_NEMO}/input/bathy_meter.nc
 ISF_DRAFT_GENERIC=${WORKDIR_NEMO}/input/isf_draft_meter.nc
-
-From_VTK_TO_NETCDF_PATH=${HOME}/util/From_VTK_to_NetCDF/build/fromVTKtoElmer
+# The following should be renamed "fromVTKtoNetcdf" or "fromElmertoNEMO" :
+From_VTK_TO_NETCDF_PATH="../From_VTK_to_NetCDF/build/fromVTKtoElmer"
 
 ###################################################
 ## End of User's choices
@@ -181,9 +183,9 @@ ln -sf $ELMER_WORK_PATH $HOMEDIR_MISOMIP/WORK_ELMER
 
 #COMPILING ELMER SOLVERS
 
-# SAVE createRUN.sh informations in Templates/createRUN
+# SAVE createRUN.sh informations in RUNS/createRUN
 cd $CREATEDIR
-if [ ! -d Templates/createRUN ]; then
-  mkdir Templates/createRUN
+if [ ! -d RUNS/createRUN ]; then
+  mkdir RUNS/createRUN
 fi
-cp -p createRUN.sh Templates/createRUN/createRUN_${1}.sh 
+cp -p createRUN.sh RUNS/createRUN/createRUN_${1}.sh 

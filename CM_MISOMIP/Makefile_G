@@ -14,9 +14,9 @@ NETCDFINC="-I$(NETCDFHOME)/include"
 NETCDFLIBS="-L$(NETCDFHOME)/lib -lnetcdff -lnetcdf"
 
 # non-committed elmerice in ELMERICE_SRC and ELMERICE_USF, and Nacho's in SOLVERS_SRC
-ELMERICE_SRC=/home/njourd/util/ElmerSolver_IGE
-ELMERICE_USF=/home/njourd/util/ElmerSolver_IGE
-SOLVERS_SRC=/home/njourd/util/MISOMIP_Melt
+ELMERICE_SRC=<workdir>/My_ElmerSolver
+ELMERICE_USF=<workdir>/My_ElmerSolver
+SOLVERS_SRC=<workdir>/MISOMIP_Melt
 ExecPath=<ExecutablePath>
 
 SOLVERS_LIST=$(ELMERICE_SRC)/SSAStar.F90 \
