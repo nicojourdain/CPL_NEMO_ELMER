@@ -296,12 +296,14 @@ export WORK=/scratch/shared/egige60    ## to adapt, typically $SCRATCHDIR
 mkdir $WORK/NEMO_MISOMIP
 mkdir $WORK/ELMER_MISOMIP
 
-# Prepare NEMO
-mkdir $WORK/NEMO_MISOMIP/FILES   ## here put NEMO's xml, namelist, f90, rebuild, etc
-mkdir $WORK/NEMO_MISOMIP/input   ## here put NEMO's inputs (bathy, dta, resto, ...)
-mkdir $WORK/NEMO_MISOMIP/output
-mkdir $WORK/NEMO_MISOMIP/restart
-mkdir $WORK/NEMO_MISOMIP/run     ## will be filled by the config manager
+# Prepare NEMO:
+cd $WORK/NEMO_MISOMIP
+ln -s -v ~/CPL_NEMO_ELMER/NEMO_FILES FILES   ## (if needed, adapt NEMO's xml, namelist, f90, rebuild, etc)
+mkdir input   ## here put NEMO's inputs (bathy, dta, resto, ...)
+              ## NB: you can use fortran scripts in ~/CPL_NEMO_ELMER/BUILD_NEMO_INPUT to build the netcdf input files.
+mkdir output  ## where NEMO's netcdf output files will go.
+mkdir restart ## where NEMO's netcdf restart files will go.
+mkdir run     ## will be filled by the config manager.
 
 # Get and use Nacho's Config Manager:
 ##old: cd ~
