@@ -64,6 +64,13 @@ From_VTK_TO_NETCDF_PATH="../From_VTK_to_NetCDF/build/fromVTKtoElmer"
 ## End of User's choices
 ###################################################
 
+#Do nothing and leave the script if no argument is supplied
+if [ $# -eq 0 ]
+then
+        echo "ERROR: nothing done, give a name to your case" 
+        exit 1
+fi
+
 echo "Creating Run $1"
 echo "  > time slots of ${NEMO_DAYS_RUN} days (rounded to full nb of months)"
 echo "  > experiment is ${FORCING_EXP_ID} / ${PREFIX_ELMER}"
