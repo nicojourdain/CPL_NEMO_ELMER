@@ -209,7 +209,7 @@ Press c ; adjust the following option if needed. If not appearing type 't' **IMM
 #  CMAKE_Fortran_COMPILER           /opt/software/common/intel/compilers_and_libraries_2017.0.098/linux/bin/intel64/ifort
 ```
 Then press c again. Then adjust the main options, in particular:
-```shell
+```console
 #  CMAKE_BUILD_TYPE                RelWithDebInfo
 #  CMAKE_Fortran_MODULE_DIRECTORY  /home/${USER}/models/Elmer/build/fmodules
 #  CMAKE_INSTALL_PREFIX            /home/${USER}/models/Elmer/install
@@ -242,20 +242,20 @@ Then press c again. Then adjust the main options, in particular:
 **NB:**
 * Adjust iteratively, then use option g (generate) if available (if not keep adjusting).
 * Pay attention not to remove lines (with 'd'). To restart the process from scratch, remove everything in the build directory and relaunch the ccmake command.
-* ```shell CMAKE_Fortran_MODULE_DIRECTORY``` must be an absolute path !!
-* If not working, try with WITH\_GridDataReader and WITH\_ScatteredDataInterpolator OFF
+* ```CMAKE_Fortran_MODULE_DIRECTORY``` must be an absolute path !!
+* If not working, try with ```WITH_GridDataReader``` and ```WITH_ScatteredDataInterpolator``` ```OFF```
 
 And later on if you need them, recompile elmer with these lines in a Makefile:
 
 ```makefile
-#    Scattered2DDataInterpolator: $(ELMER_Scatter)/Scattered2DDataInterpolator.F90 $(ExecPath)/csa_interpolate_points.o $(ExecPath)/Scattered2D_FInterface.o
-#            elmerf90 $(NETCDFINC) $^ $(NNLIB) $(CSLIB) -o $(ExecPath)/$@ $(NETCDFLIBS)
-#  
-#    $(ExecPath)/csa_interpolate_points.o : $(ELMER_Scatter)/csa_interpolate_points.c
-#            $(CC) $(CCFLAG) -I$(CS_HOME) -c $^ -o $@
-#
-#    $(ExecPath)/Scattered2D_FInterface.o : $(ELMER_Scatter)/Scattered2D_FInterface.F90
-#            elmerf90 -c $< -o $@
+    Scattered2DDataInterpolator: $(ELMER_Scatter)/Scattered2DDataInterpolator.F90 $(ExecPath)/csa_interpolate_points.o $(ExecPath)/Scattered2D_FInterface.o
+            elmerf90 $(NETCDFINC) $^ $(NNLIB) $(CSLIB) -o $(ExecPath)/$@ $(NETCDFLIBS)
+  
+    $(ExecPath)/csa_interpolate_points.o : $(ELMER_Scatter)/csa_interpolate_points.c
+            $(CC) $(CCFLAG) -I$(CS_HOME) -c $^ -o $@
+
+    $(ExecPath)/Scattered2D_FInterface.o : $(ELMER_Scatter)/Scattered2D_FInterface.F90
+            elmerf90 -c $< -o $@
 ```
 
 nproc        # to know how many available procs
