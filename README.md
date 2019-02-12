@@ -2,22 +2,26 @@
 
 Package to couple the [NEMO ocean model](https://www.nemo-ocean.eu) and the [Elmer/Ice ice sheet model](elmerice.elmerfem.org).
 
-### Known caveats:
-        * For the moment, limited to the MISOMIP case (Asay-Davis et al. 2016).
+## Known caveats:
+* For the moment, limited to the MISOMIP case (Asay-Davis et al. 2016).
 
-### History:
-	* 07/2017: First version (Nacho Merino)
-	* 12/2017: Add README files and multiple EXP cases (Nicolas Jourdain)
-	* 01/2018: Cleaning and further comments (Lionel Favier & Nicolas Jourdain)
+## History:
+* 07/2017: First version (Nacho Merino)
+* 12/2017: Add README files and multiple EXP cases (Nicolas Jourdain)
+* 01/2018: Cleaning and further comments (Lionel Favier & Nicolas Jourdain)
 
-### Download
+## Download
 
 ```shell
 cd ~
 git clone https://github.com/nicojourdain/CPL_NEMO_ELMER.git
-# or (if you have a github account with a registered public key):
+```
+
+Or, if you have a github account with a registered public key:
+```shell
 git clone git@github.com:nicojourdain/CPL_NEMO_ELMER.git
 ```
+
 ----------------------------
 
 ## Installation
@@ -45,7 +49,7 @@ Here is an exemple for occigen at CINES:
   export PATH=.:$ELMER_HOME/bin:$PATH
 ```
 
-**NB:** Install all the libraries with this environment
+**NB:** Install all the libraries with this environment.
 
 
 ### 1- Install libraries required for Elmer/Ice
@@ -71,12 +75,17 @@ cd VTK-8.0.0
 mkdir build
 cd build
 ccmake ~/util/VTK-8.0.0
-# This will open an interactive window.
-# Press c to configure, then fill some of the fields, for example:
-# CMAKE_INSTALL_PREFIX             /home/${USER}/util/VTK-8.0.0/build
-# EXECUTABLE_OUTPUT_PATH           /home/${USER}/lib
-# LIBRARY_OUTPUT_PATH              /home/${USER}/lib
-# Then press c again. Then press g to generate the makefile.
+```
+
+This will open an interactive window. Press c to configure, then fill some of the fields, for example:
+```console
+CMAKE_INSTALL_PREFIX             /home/${USER}/util/VTK-8.0.0/build
+EXECUTABLE_OUTPUT_PATH           /home/${USER}/lib
+LIBRARY_OUTPUT_PATH              /home/${USER}/lib
+```
+
+Then press c again. Then press g to generate the makefile.
+```shell
 make  ## or make -j4 to go faster on parallel machines
 cd ~/lib
 for file in ~/util/VTK-8.0.0/build/lib/lib*; do ln -s -v $file; done
@@ -133,6 +142,7 @@ for file in ~/util/MUMPS_5.1.1/lib/lib*; do ln -s -v $file; done
 cd ~/include
 for file in ~/util/MUMPS_5.1.1/include/*; do ln -s -v $file; done
 ```
+
 **NB:** if quota issues, you can remove PORD/ SCILAB/ MATLAB/ doc/ src/ examples/
 
 #### 1.3- CSA (Bivariate Cubic Spline approximation library)
@@ -157,10 +167,11 @@ cd ~/util
 ln -s -v ~/util/pygridgen/external/csa
 ```
 
-#######################################################################################
-# NN (Natural Neighbours interpolation library)
-# https://github.com/hetland/pygridgen/tree/master/external/nn
+#### 1.4- NN (Natural Neighbours interpolation library)
 
+See https://github.com/hetland/pygridgen/tree/master/external/nn
+
+```shell
 cd ~/util/pygridgen/external/nn
 ./configure
 make
@@ -175,13 +186,15 @@ cd nn
 for file in ~/util/pygridgen/external/nn/*.h; do ln -s -v $file; done
 cd ~/util
 ln -s -v ~/util/pygridgen/external/nn
+```
 
-#######################################################################################
 ## 2- Compile Elmer/Ice
-##    Tested with git version 6be9699fd6d9b15082f5bfad04776aabfa742489 (21/12/2017)
-#######################################################################################
-# see https://groupes.renater.fr/wiki/elmerice/elmergit
 
+Tested with Elmer/Ice git version 6be9699fd6d9b15082f5bfad04776aabfa742489 (21/12/2017)
+
+See https://groupes.renater.fr/wiki/elmerice/elmergit
+
+```shell
 cd models
 mkdir Elmer
 cd Elmer
@@ -190,12 +203,13 @@ mkdir build install
 cd build
 export LANG=C
 ccmake ../elmerfem
-#================
-# Press c
-# First, adjust the following option if needed
-# If not appearing type 't' IMMEDIATELY because it affects the further other options
+```
+Press c ; adjust the following option if needed. If not appearing type 't' **IMMEDIATELY** because it affects the other options.
+```console
 #  CMAKE_Fortran_COMPILER           /opt/software/common/intel/compilers_and_libraries_2017.0.098/linux/bin/intel64/ifort
-# Then press c again. Then adjust the main options, in particular:
+```
+Then press c again. Then adjust the main options, in particular:
+```shell
 #  CMAKE_BUILD_TYPE                RelWithDebInfo
 #  CMAKE_Fortran_MODULE_DIRECTORY  /home/${USER}/models/Elmer/build/fmodules
 #  CMAKE_INSTALL_PREFIX            /home/${USER}/models/Elmer/install
@@ -224,13 +238,16 @@ ccmake ../elmerfem
 #  NN_LIB                           /home/${USER}/lib/libnn.a
 #  CSA_INCLUDE_DIR                  /home/${USER}/include/csa
 #  CSA_LIB                          /home/${USER}/lib/libcsa.a
-# Adjust iteratively, then use option g (generate) if available (if not keep adjusting)
-# NB1: Pay attention not to remove lines (with 'd'). To restart the process from scratch,
-#      remove everything in the build directory and relaunch the ccmake command.
-# NB2: CMAKE_Fortran_MODULE_DIRECTORY must be an absolute path !!
-# NB3: If not working, try with WITH_GridDataReader and WITH_ScatteredDataInterpolator OFF
-#      And later on if you need them, recompile elmer with these lines in a Makefile:
-#
+```
+**NB:**
+* Adjust iteratively, then use option g (generate) if available (if not keep adjusting).
+* Pay attention not to remove lines (with 'd'). To restart the process from scratch, remove everything in the build directory and relaunch the ccmake command.
+* ```shell CMAKE_Fortran_MODULE_DIRECTORY``` must be an absolute path !!
+* If not working, try with WITH\_GridDataReader and WITH\_ScatteredDataInterpolator OFF
+
+And later on if you need them, recompile elmer with these lines in a Makefile:
+
+```makefile
 #    Scattered2DDataInterpolator: $(ELMER_Scatter)/Scattered2DDataInterpolator.F90 $(ExecPath)/csa_interpolate_points.o $(ExecPath)/Scattered2D_FInterface.o
 #            elmerf90 $(NETCDFINC) $^ $(NNLIB) $(CSLIB) -o $(ExecPath)/$@ $(NETCDFLIBS)
 #  
@@ -239,20 +256,18 @@ ccmake ../elmerfem
 #
 #    $(ExecPath)/Scattered2D_FInterface.o : $(ELMER_Scatter)/Scattered2D_FInterface.F90
 #            elmerf90 -c $< -o $@
-#===============
+```
+
 nproc        # to know how many available procs
 make -j8     # or make install if only one proc
 make install
 # to check compilation:
 ctest -L elmerice-fast   # should pass all the tests
 
-#######################################################################################
 ## 3- Install Elmer/Ice-NEMO Coupling interface
-#######################################################################################
 
-#######################################################################
-# First, install NetCDF-c++ library if not already installed :
-# Choose your version on http://www.unidata.ucar.edu/downloads/netcdf
+First, install NetCDF-c++ library if not already installed :
+Choose your version on http://www.unidata.ucar.edu/downloads/netcdf
 
 cd ~/util
 wget https://github.com/Unidata/netcdf-cxx4/archive/v4.2.1.tar.gz
