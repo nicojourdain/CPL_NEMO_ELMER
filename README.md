@@ -2,7 +2,7 @@
 
 Package to couple the [NEMO ocean model](https://www.nemo-ocean.eu) and the [Elmer/Ice ice sheet model](elmerice.elmerfem.org).
 
-[![DOI](https://zenodo.org/badge/114695996.svg)](https://zenodo.org/badge/latestdoi/114695996)
+[![DOI](https://zenodo.org/badge/114695996.svg)](https://zenodo.org/badge/latestdoi/114695996) https://doi.org/10.5281/zenodo.2562837
 
 All the files in this repository are under the GNU GENERAL PUBLIC LICENSE.
 
