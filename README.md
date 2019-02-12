@@ -143,7 +143,7 @@ cd ~/include
 for file in ~/util/MUMPS_5.1.1/include/*; do ln -s -v $file; done
 ```
 
-**NB:** if quota issues, you can remove PORD/ SCILAB/ MATLAB/ doc/ src/ examples/
+**NB:** if quota issues, you can remove ```PORD/``` ```SCILAB/``` ```MATLAB/``` ```doc/``` ```src/``` ```examples/```.
 
 #### 1.3- CSA (Bivariate Cubic Spline approximation library)
 
@@ -270,6 +270,7 @@ nproc        # to know how many available procs
 make -j8     # or make install if only one proc
 make install
 ```
+
 Then, to check compilation:
 ```shell
 ctest -L elmerice-fast   # should pass all the tests
@@ -373,12 +374,11 @@ Examples of createRUN.sh can be found in the Template directory.
 You will also need to edit the following files :
 ```shell
 vi $WORK/NEMO_MISOMIP/FILES/namelist_nemo_GENERIC_ISOMIP         ## Choose NEMO's options
-vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Templates/Sif/scketchIce1r_SSAStar_fromNEMO.sif  ## Choose Elmer/Ice's options 
-                                                                 ## (including MISOMIP_Melt_Consv vs MISOMIP_Melt_Consv_Evolv)
-                                                                 ## WARNING : the sif are copied from this file at each submission,
-                                                                 ##   so not possible to run 2 runs with different sif simultaneously !!
-                                                                 ##   [ or change variable scketch in WORK_ELMER/scriptIce1rExecute.sh
-                                                                 ##     once the run is prepared ].
+vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Templates/Sif/scketchIce1r_SSAStar_fromNEMO.sif  
+             ## Choose Elmer/Ice's options (including MISOMIP_Melt_Consv vs MISOMIP_Melt_Consv_Evolv)
+             ## WARNING : the sif are copied from this file at each submission,
+             ##   so not possible to run 2 runs with different sif simultaneously !!
+             ##   [ or change variable scketch in WORK_ELMER/scriptIce1rExecute.sh once the run is prepared ].
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/run_nemo_ISOMIP.sh        ## Adapth paths and executable directories
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/scriptIce1rExecute.sh     ## Adapt sif name, Elmer cstes, SBATCH walltime, etc
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/scriptIce1aExecute.sh     ## Adapt sif name, Elmer cstes, SBATCH walltime, etc
@@ -437,7 +437,7 @@ You can follow soma basic diagnostics in COUPLED_Run.db
 **NB:** To restart a job that failed :
 ```shell
 cd ~/CPL_NEMO_ELMER/CM_MISOMIP/RUNS/WORK_NEMO/${CASE}
-```shell
+```
 Check the last standard error output, e.g. run_nemo.eXXXX. You should find something like: 
 ```console
 ./scriptIce1rExecute.sh 20 3247833 /scratch/cnt0021/gge6066/njourdain/NEMO_MISOMIP//output/nemo_ISOMIP_CPLFREQ1yr_hmin30/0019
