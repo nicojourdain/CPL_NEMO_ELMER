@@ -2,6 +2,8 @@
 
 Package to couple the [NEMO ocean model](https://www.nemo-ocean.eu) and the [Elmer/Ice ice sheet model](elmerice.elmerfem.org).
 
+[![DOI](https://zenodo.org/badge/114695996.svg)](https://zenodo.org/badge/latestdoi/114695996)
+
 ## Known caveats:
 * For the moment, limited to the MISOMIP case (Asay-Davis et al. 2016).
 
