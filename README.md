@@ -26,7 +26,7 @@ git clone git@github.com:nicojourdain/CPL_NEMO_ELMER.git
 
 ## Installation
 
-### 0- Prerequisite
+### Prerequisite
 
 Everything written for $USER, to be defined with :
 ```shell
@@ -62,7 +62,7 @@ mkdir ~/util
 mkdir ~/include
 ```
 
-#### 1.1- VTK (Visualisation Tool Kit)
+#### VTK (Visualisation Tool Kit)
 
 See [http://www.vtk.org](http://www.vtk.org) and [http://www.vtk.org/Wiki/VTK/Configure_and_Build](http://www.vtk.org/Wiki/VTK/Configure_and_Build)
 
@@ -93,7 +93,7 @@ for file in ~/util/VTK-8.0.0/build/lib/lib*; do ln -s -v $file; done
 
 **NB:** to save space (if quota), it is recommended to remove all directories in ~/util/VTK-8.0.0 except build/bin and build/lib
 
-#### 1.2- MUMPS (MUltifrontal Massively Parallel sparse direct Solver)
+#### MUMPS (MUltifrontal Massively Parallel sparse direct Solver)
 
 To install in not available in module environment (note for occigen users: module load mumps/5.1.1 doesn't work so far).
 
@@ -145,7 +145,7 @@ for file in ~/util/MUMPS_5.1.1/include/*; do ln -s -v $file; done
 
 **NB:** if quota issues, you can remove ```PORD/``` ```SCILAB/``` ```MATLAB/``` ```doc/``` ```src/``` ```examples/```.
 
-#### 1.3- CSA (Bivariate Cubic Spline approximation library)
+#### CSA (Bivariate Cubic Spline approximation library)
 
 See https://github.com/hetland/pygridgen/tree/master/external/csa
 
@@ -167,7 +167,7 @@ cd ~/util
 ln -s -v ~/util/pygridgen/external/csa
 ```
 
-#### 1.4- NN (Natural Neighbours interpolation library)
+#### NN (Natural Neighbours interpolation library)
 
 See https://github.com/hetland/pygridgen/tree/master/external/nn
 
@@ -188,7 +188,7 @@ cd ~/util
 ln -s -v ~/util/pygridgen/external/nn
 ```
 
-### 2- Compile Elmer/Ice
+### Compile Elmer/Ice
 
 Tested with Elmer/Ice git version 6be9699fd6d9b15082f5bfad04776aabfa742489 (21/12/2017)
 
@@ -276,7 +276,7 @@ Then, to check compilation:
 ctest -L elmerice-fast   # should pass all the tests
 ```
 
-### 3- Install the Elmer/Ice-NEMO Coupling interface
+### Install the Elmer/Ice-NEMO Coupling interface
 
 First, install NetCDF-c++ library if not already installed. Choose your version on http://www.unidata.ucar.edu/downloads/netcdf
 
@@ -294,7 +294,7 @@ make check # should pass 7/7
 
 **NB:** if needed (quota), you can remove cxx4/ and examples/ once compiled
 
-### 4- Install the coupling tools to transform VTK to netcdf
+### Install the coupling tools to transform VTK to netcdf
 
 This is used to write Elmer/Ice's ice draft in NEMO's netcdf format.
 
@@ -343,7 +343,7 @@ ls -al ~/CPL_NEMO_ELMER/My_ElmerSolver
 
 ------------------------------
 
-##  Prepare Elmer/Ice-NEMO run using the Config Manager
+## Prepare Elmer/Ice-NEMO run using the Config Manager (CM)
 
 Prepare working directories:
 ```shell
@@ -386,7 +386,7 @@ vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/scriptIce1aExecute.sh     ## Adapt sif na
 
 ---------------------------------
 
-## Run MISOMIP
+## Run a coupled simulation
 
 For each case (i.e. set of parameters, boundary conditions, etc), choose a case name, e.g. :
 
