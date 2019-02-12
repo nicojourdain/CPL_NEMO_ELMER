@@ -210,34 +210,41 @@ Press c ; adjust the following option if needed. If not appearing type 't' **IMM
 ```
 Then press c again. Then adjust the main options, in particular:
 ```console
-#  CMAKE_BUILD_TYPE                RelWithDebInfo
-#  CMAKE_Fortran_MODULE_DIRECTORY  /home/${USER}/models/Elmer/build/fmodules
-#  CMAKE_INSTALL_PREFIX            /home/${USER}/models/Elmer/install
-#  CPACK_PACKAGE_FILE_NAME         elmerfem-8.2-ddb8140-20170712_Linux-x86_64
-#  ELMER_SOLVER_HOME               /home/${USER}/bin/elmersolver
-#  WITH_CONTRIB                     OFF
-#  WITH_ELMERGUI                    OFF
-#  WITH_ELMERGUILOGGER              OFF
-#  WITH_ELMERGUITESTER              OFF
-#  WITH_ELMERPOST                   OFF
-#  WITH_ElmerIce                    ON
-#  WITH_FETI4I                      OFF
-#  WITH_Hypre                       OFF
-#  WITH_MKL                         ON
-#  WITH_MPI                         ON
-#  WITH_Mumps                       ON
-#  WITH_OpenMP                      ON
-#  WITH_Trilinos                    OFF
-# Then press c again
-# Press t to have more options, e.g.:
-#  OpenMP_Fortran_FLAGS             -qopenmp
-#  WITH_GridDataReader              ON
-#  WITH_ScatteredDataInterpolator   ON
-# Press c several times as new options appear each time.
-#  NN_INCLUDE_DIR                   /home/${USER}/include/nn
-#  NN_LIB                           /home/${USER}/lib/libnn.a
-#  CSA_INCLUDE_DIR                  /home/${USER}/include/csa
-#  CSA_LIB                          /home/${USER}/lib/libcsa.a
+ CMAKE_BUILD_TYPE                RelWithDebInfo
+ CMAKE_Fortran_MODULE_DIRECTORY  /home/${USER}/models/Elmer/build/fmodules
+ CMAKE_INSTALL_PREFIX            /home/${USER}/models/Elmer/install
+ CPACK_PACKAGE_FILE_NAME         elmerfem-8.2-ddb8140-20170712_Linux-x86_64
+ ELMER_SOLVER_HOME               /home/${USER}/bin/elmersolver
+ WITH_CONTRIB                     OFF
+ WITH_ELMERGUI                    OFF
+ WITH_ELMERGUILOGGER              OFF
+ WITH_ELMERGUITESTER              OFF
+ WITH_ELMERPOST                   OFF
+ WITH_ElmerIce                    ON
+ WITH_FETI4I                      OFF
+ WITH_Hypre                       OFF
+ WITH_MKL                         ON
+ WITH_MPI                         ON
+ WITH_Mumps                       ON
+ WITH_OpenMP                      ON
+ WITH_Trilinos                    OFF
+```
+
+Then press c again.
+
+Press t to have more options, e.g.:
+```shell
+ OpenMP_Fortran_FLAGS             -qopenmp
+ WITH_GridDataReader              ON
+ WITH_ScatteredDataInterpolator   ON
+```
+
+Press c several times as new options appear each time.
+```shell
+ NN_INCLUDE_DIR                   /home/${USER}/include/nn
+ NN_LIB                           /home/${USER}/lib/libnn.a
+ CSA_INCLUDE_DIR                  /home/${USER}/include/csa
+ CSA_LIB                          /home/${USER}/lib/libcsa.a
 ```
 **NB:**
 * Adjust iteratively, then use option g (generate) if available (if not keep adjusting).
@@ -258,17 +265,21 @@ And later on if you need them, recompile elmer with these lines in a Makefile:
             elmerf90 -c $< -o $@
 ```
 
+```shell
 nproc        # to know how many available procs
 make -j8     # or make install if only one proc
 make install
-# to check compilation:
+```
+Then, to check compilation:
+```shell
 ctest -L elmerice-fast   # should pass all the tests
+```
 
-## 3- Install Elmer/Ice-NEMO Coupling interface
+### 3- Install the Elmer/Ice-NEMO Coupling interface
 
-First, install NetCDF-c++ library if not already installed :
-Choose your version on http://www.unidata.ucar.edu/downloads/netcdf
+First, install NetCDF-c++ library if not already installed. Choose your version on http://www.unidata.ucar.edu/downloads/netcdf
 
+```shell
 cd ~/util
 wget https://github.com/Unidata/netcdf-cxx4/archive/v4.2.1.tar.gz
 tar xzvf v4.2.1.tar.gz
@@ -278,54 +289,70 @@ mkdir BUILD
 make
 make install
 make check # should pass 7/7
-# NB: if needed (quota), you can remove cxx4/ and examples/ once compiled
+```
 
-##################################################################
-# Then install the coupling tools to transform VTK to netcdf
-# (used to write El'mer/Ice's ice draft in NEMO's netcdf format)
+**NB:** if needed (quota), you can remove cxx4/ and examples/ once compiled
 
-##old: cd ~/util
-##old: git clone https://github.com/nicojourdain/From_VTK_to_NetCDF.git
-##old: cd From_VTK_to_NetCDF
+### 4- install the coupling tools to transform VTK to netcdf
+
+This is used to write Elmer/Ice's ice draft in NEMO's netcdf format.
+
+```shell
 cd ~/CPL_NEMO_ELMER/From_VTK_to_NetCDF
 vi CMakeLists.txt
-# adjust:
-#     set(VTK_DIR "/home/${USER}/util/VTK-8.0.0/build")
-# and:
-#     include_directories("/home/${USER}/util/netcdf-cxx4-4.2.1/BUILD/include/")    
+```
+Adapt these lines according to previous steps :
+```console
+ set(VTK_DIR "/home/${USER}/util/VTK-8.0.0/build")
+```
+and:
+```console
+ include_directories("/home/${USER}/util/netcdf-cxx4-4.2.1/BUILD/include/")    
+```
+
+Then:
+```shell
 mkdir build
 cd build
 ccmake ..
-# adjust:
-#  CMAKE_INSTALL_PREFIX             /home/${USER}/util/From_VTK_to_NetCDF/build
-#  NETCDF_LIB                       /home/${USER}/util/netcdf-cxx4-4.2.1/BUILD/lib/libnetcdf_c++4.so
+```
+
+Adjust:
+```console
+ CMAKE_INSTALL_PREFIX             /home/${USER}/util/From_VTK_to_NetCDF/build
+ NETCDF_LIB                       /home/${USER}/util/netcdf-cxx4-4.2.1/BUILD/lib/libnetcdf_c++4.so
+```
+
+Then:
+```shell
 make
+```
 
-##############################################################
-# Get the Elmer Solver to feed Elmer with NEMO's melt rates in the context of MISOMIP:
-# (and other modified solvers for MISOMIP)
+### 5- Get the Elmer Solver to feed Elmer with NEMO's melt rates in the context of MISOMIP (and other modified solvers for MISOMIP)
 
-##old: cd ~/util
-##old: git clone https://github.com/nicojourdain/MISOMIP_Melt.git
-
-# The routines used by Elmer/Ice to read NEMO's melt rates are here:
+The routines used by Elmer/Ice to read NEMO's melt rates are here:
+```shell
 ls -al ~/CPL_NEMO_ELMER/MISOMIP_Melt
+```
 
-# There are specific routines (not yet in standard Elmer/Ice release) in the following folder 
-# (check on the "LGGE wiki" https://groupes.renater.fr/wiki/elmerice/elmericegit
-#  and if needed put your own solvers in it):
+There are specific routines (not yet in standard Elmer/Ice release) in the following folder (check on the "LGGE wiki" https://groupes.renater.fr/wiki/elmerice/elmericegit and if needed put your own solvers in it):
+```shell
 ls -al ~/CPL_NEMO_ELMER/My_ElmerSolver
+```
 
-#######################################################################################
-## 4- Prepare Elmer/Ice-NEMO run using the Config Manager
-#######################################################################################
+------------------------------
 
-# Prepare working directories:
+##  Prepare Elmer/Ice-NEMO run using the Config Manager
+
+Prepare working directories:
+```shell
 export WORK=/scratch/shared/egige60    ## to adapt, typically $SCRATCHDIR
 mkdir $WORK/NEMO_MISOMIP
 mkdir $WORK/ELMER_MISOMIP
+```
 
-# Prepare NEMO:
+Prepare NEMO:
+```shell
 cd $WORK/NEMO_MISOMIP
 ln -s -v ~/CPL_NEMO_ELMER/NEMO_FILES FILES   ## (if needed, adapt NEMO's xml, namelist, f90, rebuild, etc)
 mkdir input   ## here put NEMO's inputs (bathy, dta, resto, ...)
@@ -333,18 +360,18 @@ mkdir input   ## here put NEMO's inputs (bathy, dta, resto, ...)
 mkdir output  ## where NEMO's netcdf output files will go.
 mkdir restart ## where NEMO's netcdf restart files will go.
 mkdir run     ## will be filled by the config manager.
+```
 
-# Get and use Nacho's Config Manager:
-##old: cd ~
-##old: git clone https://github.com/nicojourdain/CM_MISOMIP.git
-##old: cd CM_MISOMIP
+Get and use the Configuration Manager:
+```shell
 cd ~/CPL_NEMO_ELMER/CM_MISOMIP
 vi Makefile_G    ## (_G -> Generic) Adapt libraries and path to your case if needed
 vi createRUN.sh  ## Adapt to the run you want to initialize (see built-in comments)
+```
+Examples of createRUN.sh can be found in the Template directory.
 
-#############
-# IMPORTANT #
-#############
+You will also need to edit the following files :
+```shell
 vi $WORK/NEMO_MISOMIP/FILES/namelist_nemo_GENERIC_ISOMIP         ## Choose NEMO's options
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Templates/Sif/scketchIce1r_SSAStar_fromNEMO.sif  ## Choose Elmer/Ice's options 
                                                                  ## (including MISOMIP_Melt_Consv vs MISOMIP_Melt_Consv_Evolv)
@@ -355,54 +382,70 @@ vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Templates/Sif/scketchIce1r_SSAStar_fromNEMO.sif  
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/run_nemo_ISOMIP.sh        ## Adapth paths and executable directories
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/scriptIce1rExecute.sh     ## Adapt sif name, Elmer cstes, SBATCH walltime, etc
 vi ~/CPL_NEMO_ELMER/CM_MISOMIP/Scripts/scriptIce1aExecute.sh     ## Adapt sif name, Elmer cstes, SBATCH walltime, etc
+```
 
-#######################################################################################
-## 5- Run MISOMIP
-#######################################################################################
+---------------------------------
 
+## Run MISOMIP
+
+For each case (i.e. set of parameters, boundary conditions, etc), choose a case name, e.g. :
+
+```shell
 export CASE="CPL06_hmin20"  ## CASE name (should be different for each simulation)
-
 cd ~/CPL_NEMO_ELMER/CM_MISOMIP
-# - edit createRUN.sh and indicate pathways, cpl frequency, etc
-# - you may also have to change things in Scripts/run_nemo_ISOMIP.sh
+vi createRUN.sh # indicate pathways, coupling frequency, etc
+vi Scripts/run_nemo_ISOMIP.sh # change if needed
 ./createRUN.sh ${CASE}
+```
 
-# NB: when you execute createRUN.sh, a copy of createRUN.sh is saved under the RUNS/createRUN
-#     directory so that you can easily duplicate a run or be sure to change only one parameter.
+**NB:** when you execute createRUN.sh, a copy of createRUN.sh is saved under the ```RUNS/createRUN``` directory so that you can easily duplicate a run or be sure to change only one parameter.
 
-## Compile Elmer/Ice
+Compile Elmer/Ice:
+```shell
 cd RUNS/${CASE}/WORK_ELMER
 make all
+```
 
-## check values in scriptIce1rExecute.sh :
-##      - sbatch parameters (run duration, etc)
-##      - sif parameters
+Check values in scriptIce1rExecute.sh :
+* sbatch parameters (run duration, etc)
+* sif parameters
 
+```shell
 cd ../WORK_NEMO
-## check namelist parameters, xml files, batch parameters 
-#  (if not correct, adapt scripts in $WORK/NEMO_MISOMIP/FILES)
+```
+Check namelist parameters, xml files, batch parameters (if not correct, adapt scripts in ```$WORK/NEMO_MISOMIP/FILES```)
+```shell
 cd ..
+```
 
-##### Here, you have two options:
-# (1) To start with an ocean at rest: 
+Then, you have two options:
+1. To start with an ocean at rest: 
+```shell
 ./script_RUN_MISOMIP.sh
-# (2) To start from an ocean restart (e.g. from a spin up with imposed geometry) :
+```
+2. To start from an ocean restart (e.g. from a spin up with imposed geometry) :
+```shell
 ./script_Start_From_Restart.sh
+```
+You can follow soma basic diagnostics in COUPLED_Run.db
 
-# You can follow soma basic diagnostics in COUPLED_Run.db
-
-# NB: to increase NRUN_MAX during the simulation, you can do:
+**NB:** to increase NRUN_MAX during the simulation, you can do:
+```shell
 ./script_Exec_MISOMIP.sh ${NEW_RUN_MAX}
+```
 
-# the outputs are in ...
-
-# to restart a job that failed :
+**NB:** To restart a job that failed :
+```shell
 cd ~/CPL_NEMO_ELMER/CM_MISOMIP/RUNS/WORK_NEMO/${CASE}
-# check the last run_nemo.eXXXX
-# you should find something like: ./scriptIce1rExecute.sh 20 3247833 /scratch/cnt0021/gge6066/njourdain/NEMO_MISOMIP//output/nemo_ISOMIP_CPLFREQ1yr_hmin30/0019
-# re-execute this script with the same line.
-# if the path are not correct, clean by re-executing the ./createRUN.sh ${CASE} in the config manager.
+```shell
+Check the last standard error output, e.g. run_nemo.eXXXX. You should find something like: 
+```console
+./scriptIce1rExecute.sh 20 3247833 /scratch/cnt0021/gge6066/njourdain/NEMO_MISOMIP//output/nemo_ISOMIP_CPLFREQ1yr_hmin30/0019
+```
+Re-execute this script with the same line. If the path are not correct, clean by re-executing the ```./createRUN.sh ${CASE}``` in the config manager.
 
-# If NEMO crashes:
-vi prod_nemo.db  ## virer la derniere ligne
+**NB:** If NEMO crashes:
+```shell
+vi prod_nemo.db  ## remove last line
 qsub run_nemo_ISOMIP.sh 1 <restart_file>
+```
