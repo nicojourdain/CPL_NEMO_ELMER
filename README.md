@@ -329,7 +329,7 @@ Then:
 make
 ```
 
-### 5- Get the Elmer Solver to feed Elmer with NEMO's melt rates in the context of MISOMIP (and other modified solvers for MISOMIP)
+### Get the Elmer Solver to feed Elmer with NEMO's melt rates in the context of MISOMIP (and other modified solvers for MISOMIP)
 
 The routines used by Elmer/Ice to read NEMO's melt rates are here:
 ```shell
