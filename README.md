@@ -4,6 +4,8 @@ Package to couple the [NEMO ocean model](https://www.nemo-ocean.eu) and the [Elm
 
 [![DOI](https://zenodo.org/badge/114695996.svg)](https://zenodo.org/badge/latestdoi/114695996)
 
+All the files in this repository are under the GNU GENERAL PUBLIC LICENSE.
+
 ## Known caveats:
 * For the moment, limited to the MISOMIP case (Asay-Davis et al. 2016).
 
