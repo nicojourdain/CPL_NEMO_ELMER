@@ -188,7 +188,7 @@ cd ~/util
 ln -s -v ~/util/pygridgen/external/nn
 ```
 
-## 2- Compile Elmer/Ice
+### 2- Compile Elmer/Ice
 
 Tested with Elmer/Ice git version 6be9699fd6d9b15082f5bfad04776aabfa742489 (21/12/2017)
 
@@ -294,7 +294,7 @@ make check # should pass 7/7
 
 **NB:** if needed (quota), you can remove cxx4/ and examples/ once compiled
 
-### 4- install the coupling tools to transform VTK to netcdf
+### 4- Install the coupling tools to transform VTK to netcdf
 
 This is used to write Elmer/Ice's ice draft in NEMO's netcdf format.
 
