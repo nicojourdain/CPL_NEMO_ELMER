@@ -47,7 +47,7 @@ Here is an exemple for occigen at CINES:
   module load openmpi/intel/2.0.1
   module load hdf5/1.8.17
   module load netcdf/4.4.0_fortran-4.4.2
-  module load cmake
+  module load cmake/3.7.2
 ## Elmer's paths :
   export ELMER_HOME=/home/`whoami`/models/Elmer/install
   export PATH=.:$ELMER_HOME/bin:$PATH
@@ -87,6 +87,7 @@ CMAKE_INSTALL_PREFIX             /home/${USER}/util/VTK-8.0.0/build
 EXECUTABLE_OUTPUT_PATH           /home/${USER}/lib
 LIBRARY_OUTPUT_PATH              /home/${USER}/lib
 ```
+**NB:** It works with cmake version 3.7.2 but not 3.5.2...
 
 Then press c again. Then press g to generate the makefile.
 ```shell
