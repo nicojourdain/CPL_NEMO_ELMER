@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
     {
 	point[0]=xData[i];
 	point[1]=yData[j];
-	point[3]=0.0;
+	point[2]=0.0;
 	if ( point[1]< ymin || point[1]> ymax )
 	{
 	  newDraft[j][i] = 0.0 ;
