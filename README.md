@@ -325,7 +325,7 @@ ccmake ..
 
 Adjust:
 ```console
- CMAKE_INSTALL_PREFIX             /home/${USER}/util/From_VTK_to_NetCDF/build
+ CMAKE_INSTALL_PREFIX             /home/${USER}/CPL_NEMO_ELMER/From_VTK_to_NetCDF/build
  NETCDF_LIB                       /home/${USER}/util/netcdf-cxx4-4.2.1/BUILD/lib/libnetcdf_c++4.so
 ```
 

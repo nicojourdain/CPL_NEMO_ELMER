@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 PROJECT(fromVTKtoNetcdf)
 
-set(VTK_DIR "/home/njourd/util/VTK-8.0.0/VTK-build")
+set(VTK_DIR "/home/njourd/util/VTK-8.0.0/build")
 find_package(VTK REQUIRED)
 include(${VTK_USE_FILE})
 
